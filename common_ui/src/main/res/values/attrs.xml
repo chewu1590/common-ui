@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CountDownTextView">
+        <attr name="total_second" format="integer"/>
+        <attr name="interval_second" format="integer"/>
+        <attr name="count_tag" format="string"/>
+        <attr name="count_color" format="color"/>
+        <attr name="end_color" format="color"/>
+        <attr name="end_tip" format="string"/>
+    </declare-styleable>
+</resources>
