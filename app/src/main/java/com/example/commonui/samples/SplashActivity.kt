@@ -26,6 +26,7 @@ class SplashActivity : AppCompatActivity() {
 
             override fun onSplashViewDismiss(initiativeDismiss: Boolean) {
                 Toast.makeText(this@SplashActivity,"进入主页",Toast.LENGTH_SHORT).show()
+                //更新广告图片，可以在合适的地方执行
 //                SplashView.updateSplashData(this@SplashActivity,"图片url","webview url")
             }
         })

@@ -24,6 +24,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import cn.woochen.common_ui.utils.DefaultActivityLifecycleCallbacks
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -50,16 +51,24 @@ class SplashView : FrameLayout {
 
     private var mOnSplashViewActionListener: OnSplashViewActionListener? = null
 
-    private val mHandler by lazy {
-        Handler()
+    private val mLifecycle = object : DefaultActivityLifecycleCallbacks() {
+
+        override fun onActivityDestroyed(activity: Activity) {
+            mHandler?.removeCallbacks(timerRunnable)
+            mHandler = null
+            mActivity?.application?.unregisterActivityLifecycleCallbacks(this)
+            mActivity = null
+        }
     }
+
+    private var mHandler:Handler? = Handler()
     private val timerRunnable = object : Runnable {
         override fun run() {
             if (0 == duration) {
                 dismissSplashView(false)
                 return
             } else setDuration(--duration)
-            mHandler.postDelayed(this, delayTime.toLong())
+            mHandler?.postDelayed(this, delayTime.toLong())
         }
     }
 
@@ -89,27 +98,41 @@ class SplashView : FrameLayout {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Activity, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(context: Activity, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
+        context,
+        attrs,
+        defStyleAttr,
+        defStyleRes
+    ) {
         mActivity = context
         initComponents()
     }
 
     internal fun initComponents() {
+        mActivity?.application?.registerActivityLifecycleCallbacks(mLifecycle)
         splashSkipButtonBg.shape = GradientDrawable.OVAL
         splashSkipButtonBg.setColor(Color.parseColor("#66333333"))
-
         splashImageView = ImageView(mActivity)
         splashImageView?.scaleType = ImageView.ScaleType.FIT_XY
         splashImageView?.setBackgroundColor(mActivity!!.resources.getColor(android.R.color.white))
-        val imageViewLayoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val imageViewLayoutParams =
+            FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         this.addView(splashImageView, imageViewLayoutParams)
         splashImageView?.isClickable = true
 
         skipButton = TextView(mActivity)
-        val skipButtonSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, skipButtonSizeInDip.toFloat(), mActivity!!.resources.displayMetrics).toInt()
+        val skipButtonSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            skipButtonSizeInDip.toFloat(),
+            mActivity!!.resources.displayMetrics
+        ).toInt()
         val skipButtonLayoutParams = FrameLayout.LayoutParams(skipButtonSize, skipButtonSize)
         skipButtonLayoutParams.gravity = Gravity.TOP or Gravity.RIGHT
-        val skipButtonMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, skipButtonMarginInDip.toFloat(), mActivity!!.resources.displayMetrics).toInt()
+        val skipButtonMargin = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            skipButtonMarginInDip.toFloat(),
+            mActivity!!.resources.displayMetrics
+        ).toInt()
         skipButtonLayoutParams.setMargins(0, skipButtonMargin, skipButtonMargin, 0)
         skipButton?.gravity = Gravity.CENTER
         skipButton?.setTextColor(mActivity!!.resources.getColor(android.R.color.white))
@@ -120,7 +143,7 @@ class SplashView : FrameLayout {
         skipButton?.setOnClickListener { dismissSplashView(true) }
 
         setDuration(duration)
-        mHandler.postDelayed(timerRunnable, delayTime.toLong())
+        mHandler?.postDelayed(timerRunnable, delayTime.toLong())
     }
 
     private fun setImgUrl(imgUrl: String?) {
@@ -145,12 +168,11 @@ class SplashView : FrameLayout {
     @SuppressLint("ObjectAnimatorBinding")
     private fun dismissSplashView(initiativeDismiss: Boolean) {
         if (null != mOnSplashViewActionListener) mOnSplashViewActionListener!!.onSplashViewDismiss(initiativeDismiss)
-
-
-        mHandler.removeCallbacks(timerRunnable)
+        mHandler?.removeCallbacks(timerRunnable)
         val parent = this.parent as ViewGroup
         if (null != parent) {
-            @SuppressLint("ObjectAnimatorBinding") val animator = ObjectAnimator.ofFloat(this@SplashView, "scale", 0.0f, 0.5f).setDuration(600)
+            @SuppressLint("ObjectAnimatorBinding") val animator =
+                ObjectAnimator.ofFloat(this@SplashView, "scale", 0.0f, 0.5f).setDuration(600)
             animator.start()
             animator.addUpdateListener { animation ->
                 val cVal = animation.animatedValue as Float
@@ -220,10 +242,12 @@ class SplashView : FrameLayout {
          * @param listener  splash view listener contains onImageClick and onDismiss
          */
         @SuppressLint("RestrictedApi")
-        fun showSplashView(activity: Activity,
-                           durationTime: Int?,
-                           defaultBitmapRes: Int?,
-                           listener: OnSplashViewActionListener?) {
+        fun showSplashView(
+            activity: Activity,
+            durationTime: Int?,
+            defaultBitmapRes: Int?,
+            listener: OnSplashViewActionListener?
+        ) {
 
             val contentView = activity.window.decorView.findViewById<View>(android.R.id.content) as ViewGroup
             if (null == contentView || 0 == contentView.childCount) {
@@ -231,7 +255,8 @@ class SplashView : FrameLayout {
             }
             IMG_PATH = activity.filesDir.absolutePath.toString() + "/splash_img.jpg"
             val splashView = SplashView(activity)
-            val param = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            val param =
+                RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             splashView.setOnSplashImageClickListener(listener)
             if (null != durationTime) splashView.setDuration(durationTime)
             var bitmapToShow: Bitmap? = null
@@ -247,7 +272,10 @@ class SplashView : FrameLayout {
                 splashView.setImage(defaultBitmapRes)
             }
 
-            activity.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            activity.window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
             if (activity is AppCompatActivity) {
                 val supportActionBar = activity.supportActionBar
                 if (null != supportActionBar) {
