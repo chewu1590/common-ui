@@ -1,10 +1,13 @@
 package com.example.commonui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
+import cn.woochen.common_ui.dialog.AlertDialog
 import cn.woochen.common_ui.widget.preview.PreviewDialogFragment
 import com.example.commonui.adapter.MainAdapter
 import com.example.commonui.samples.*
@@ -13,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val mItemNames = mutableListOf("Common", "底部导航栏", "SmartRecycleview", "SplashView", "多图预览", "节点进度条")
+    private val mItemNames = mutableListOf("Common", "底部导航栏", "SmartRecycleview", "SplashView", "多图预览", "自定义弹窗")
     private val mMainAdapter by lazy {
         MainAdapter(this, mItemNames)
     }
@@ -63,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 PreviewDialogFragment.newInstance(0, images).show(this@MainActivity)
             }
             5 -> {
-                start(NodeProgreesActivity::class.java)
+                confirmAndCancel(this, "哈哈哈哈")
             }
         }
     }
@@ -72,6 +75,18 @@ class MainActivity : AppCompatActivity() {
     private fun start(clazz: Class<*>) {
         val intent = Intent(this, clazz)
         startActivity(intent)
+    }
+
+
+    fun confirmAndCancel(context: Context, message: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setContentView(R.layout.dialog_common)
+            .setText(R.id.tv_message, message)
+            .setOnClickListener(R.id.tv_cancel, View.OnClickListener { builder.dialog.dismiss() })
+            .setOnClickListener(R.id.tv_confirm, View.OnClickListener {
+                builder.dialog.dismiss()
+            })
+            .show()
     }
 
 

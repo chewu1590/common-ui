@@ -13,8 +13,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".samples.NodeProgreesActivity">
-        </activity>
         <activity android:name=".samples.SplashActivity">
         </activity>
         <activity android:name=".samples.CommonActivity">
