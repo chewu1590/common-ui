@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import cn.woochen.common_ui.R
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 
 /**
@@ -37,10 +38,12 @@ class PreviewImageAdapter: PagerAdapter {
         val viewRoot = mlayoutInflater.inflate(R.layout.item_preview, null)
         container.addView(viewRoot)
         val ivPreview = viewRoot.findViewById<ImageView>(R.id.iv_preview)
-        ivPreview.setOnClickListener {
+        viewRoot.setOnClickListener {
             onItemClickListener?.onClick(position)
         }
-        Glide.with(mContext).load(mDatas[position]).into(ivPreview)
+        val requestOptions = RequestOptions()
+        requestOptions.placeholder(R.drawable.ic_default_pic).error(R.drawable.ic_default_pic)
+        Glide.with(mContext).load(mDatas[position]).apply(requestOptions).into(ivPreview)
         return viewRoot
     }
 
