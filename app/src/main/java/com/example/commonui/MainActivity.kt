@@ -60,8 +60,6 @@ class MainActivity : AppCompatActivity() {
             }
             4 -> {
                 val images = arrayListOf<String>()
-                images.add("http://img4q.duitang.com/uploads/item/201303/15/20130315223944_EvRW3.thumb.700_0.jpeg")
-                images.add("http://pic26.nipic.com/20121227/10193203_131357536000_2.jpg")
                 images.add("http://img1.imgtn.bdimg.com/it/u=2735633715,2749454924&fm=26&gp=0.jpg")
                 PreviewDialogFragment.newInstance(0, images).show(this@MainActivity)
             }

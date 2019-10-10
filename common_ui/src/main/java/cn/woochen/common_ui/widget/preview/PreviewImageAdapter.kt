@@ -1,5 +1,6 @@
 package cn.woochen.common_ui.widget.preview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ class PreviewImageAdapter: PagerAdapter {
 
     override fun getCount(): Int = mDatas.size
 
+    @SuppressLint("CheckResult")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val viewRoot = mlayoutInflater.inflate(R.layout.item_preview, null)
         container.addView(viewRoot)
