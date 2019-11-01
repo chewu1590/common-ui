@@ -18,6 +18,7 @@ import java.util.ArrayList
  * @desc
  */
 class TabBottomNavigation : LinearLayout {
+    private var mItemGravity: Int? = 0
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -28,6 +29,13 @@ class TabBottomNavigation : LinearLayout {
     private var mCurrentIndex = -1
 
     var onItemClickListener: OnItemClickListener? = null
+
+    /**
+     * 需要在addItem之前设置
+     */
+    fun setItemGravity(gravity: Int){
+        mItemGravity = gravity
+    }
 
     /**
      * 添加条目
@@ -47,7 +55,7 @@ class TabBottomNavigation : LinearLayout {
             //重新设置布局
             val layoutParams = tabView!!.layoutParams as LinearLayout.LayoutParams
             layoutParams.weight = 1f
-            layoutParams.gravity = Gravity.CENTER
+            layoutParams.gravity = mItemGravity?:Gravity.CENTER
             tabView.layoutParams = layoutParams
             //设置点击事件
             setOnItemClick(tabView, index)
