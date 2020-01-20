@@ -1,5 +1,6 @@
 package cn.woochen.common_ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
@@ -9,15 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.concurrent.TimeUnit
 
 /**
  * 类描述：万能RecyclerView适配器
  * 创建人：woochen123
  * 创建时间：2017/5/23 18:32
  */
-abstract class CommonRecyclerAdapter<T>(protected var mContext: Context, //数据怎么办？利用泛型
-                                        protected var mDatas: List<T>, // 布局怎么办？直接从构造里面传递
-                                        private var mLayoutId: Int) : RecyclerView.Adapter<CommonRecyclerAdapter.ViewHolder>() {
+abstract class CommonRecyclerAdapter<T>( var mContext: Context, var mDatas: List<T>, var mLayoutId: Int,var clickTimeSecond :Long= 1L) : RecyclerView.Adapter<CommonRecyclerAdapter.ViewHolder>() {
     private val mInflater: LayoutInflater = LayoutInflater.from(mContext)
     // 多布局支持
     private var mMultiTypeSupport: MultiTypeSupport<T>? = null
@@ -53,15 +55,21 @@ abstract class CommonRecyclerAdapter<T>(protected var mContext: Context, //数�
         return ViewHolder(itemView)
     }
 
+    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (mItemClickListener != null) {
-            holder.itemView.setOnClickListener { mItemClickListener!!.onItemClick(position) }
+            RxView.clicks(holder.itemView)
+                .throttleFirst(clickTimeSecond, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    mItemClickListener?.onItemClick(position)
+                }
         }
         if (mLongClickListener != null) {
-            holder.itemView.setOnLongClickListener { mLongClickListener!!.onLongClick(position) }
+            holder.itemView.setOnLongClickListener { mLongClickListener?.onLongClick(position)!! }
         }
         if (mHoverListener != null) {
-            holder.itemView.setOnHoverListener { view, motionEvent -> mHoverListener!!.onHover(view, motionEvent) }
+            holder.itemView.setOnHoverListener { view, motionEvent -> mHoverListener?.onHover(view, motionEvent)!! }
         }
         convert(holder, mDatas[position])
     }
@@ -92,7 +100,7 @@ abstract class CommonRecyclerAdapter<T>(protected var mContext: Context, //数�
         /**
          * 通过id获取view
          */
-        fun <T : View> getView(viewId: Int): T {
+        fun <T : View?> getView(viewId: Int): T {
             // 先从缓存中找
             var view: View? = mViews.get(viewId)
             if (view == null) {

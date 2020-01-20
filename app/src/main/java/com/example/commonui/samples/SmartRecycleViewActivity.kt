@@ -8,7 +8,9 @@ import cn.woochen.common_ui.adapter.MultiTypeSupport
 import cn.woochen.common_ui.adapter.OnItemClickListener
 import com.example.commonui.R
 import com.example.commonui.adapter.SmartAdapter
+import com.example.commonui.util.logcom
 import kotlinx.android.synthetic.main.activity_smart_recycle_view.*
+
 /**
  *RecycleView演示类
  *@author woochen
@@ -38,14 +40,17 @@ class SmartRecycleViewActivity : AppCompatActivity() {
         val smartAdapter = SmartAdapter(this, datas, object : MultiTypeSupport<String> {
             override fun getLayoutId(item: String, position: Int): Int {
                 var layoutResId: Int
-                layoutResId = (if (item.toInt() % 2 == 0) R.layout.item_main else R.layout.item_main2)
+                layoutResId =
+                    (if (item.toInt() % 2 == 0) R.layout.item_main else R.layout.item_main2)
                 return layoutResId
             }
         })
         rv_list.adapter = smartAdapter
         smartAdapter.mItemClickListener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Toast.makeText(this@SmartRecycleViewActivity, "$position", Toast.LENGTH_SHORT).show()
+                logcom("点击：${System.currentTimeMillis()}")
+                Toast.makeText(this@SmartRecycleViewActivity, "$position", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

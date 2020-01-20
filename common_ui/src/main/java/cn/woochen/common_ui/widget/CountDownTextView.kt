@@ -20,9 +20,11 @@ class CountDownTextView : TextView {
     private val mLifecycle = object : DefaultActivityLifecycleCallbacks() {
 
         override fun onActivityDestroyed(activity: Activity) {
-            mTimer.cancel()
-            mActivity?.application?.unregisterActivityLifecycleCallbacks(this)
-            mActivity = null
+            if (mActivity == activity){
+                mTimer.cancel()
+                mActivity?.application?.unregisterActivityLifecycleCallbacks(this)
+                mActivity = null
+            }
         }
     }
     private var mTotalTime = 60 * 1000L

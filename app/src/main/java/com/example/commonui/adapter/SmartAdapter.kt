@@ -12,6 +12,7 @@ class SmartAdapter: CommonRecyclerAdapter<String> {
     constructor(context: Context, datas:List<String>,multiTypeSupport: MultiTypeSupport<String>):super(context,datas,multiTypeSupport)
 
     override fun convert(holder: ViewHolder, item: String) {
+        mContext
         holder.setText(R.id.tv_text,item)
     }
 
