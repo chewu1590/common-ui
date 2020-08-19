@@ -1,7 +1,7 @@
 package cn.woochen.common_ui.adapter
 
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 
@@ -11,9 +11,9 @@ import android.view.View
 class GridSpacingItemDecoration(private val spanCount: Int //列数
                                 , private val spacing: Int //间隔
                                 , private val includeEdge: Boolean //是否包含边缘
-) : RecyclerView.ItemDecoration() {
+) : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
 
         //这里是关键，需要根据你有几列来判断
         val position = parent.getChildAdapterPosition(view) // item position

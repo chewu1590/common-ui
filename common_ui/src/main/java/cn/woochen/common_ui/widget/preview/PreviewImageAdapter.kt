@@ -2,7 +2,7 @@ package cn.woochen.common_ui.widget.preview
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

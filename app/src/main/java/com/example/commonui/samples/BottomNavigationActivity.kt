@@ -1,8 +1,8 @@
 package com.example.commonui.samples
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import cn.woochen.common_ui.navigation.TabBottomNavigation
 import cn.woochen.common_ui.navigation.iterator.ListTabIterator
 import com.example.commonui.R
@@ -19,7 +19,7 @@ class BottomNavigationActivity : AppCompatActivity() {
     private val mTabRes =
         arrayOf(R.drawable.select_tab_work_order, R.drawable.select_tab_work_order, R.drawable.select_tab_work_order)
     private val mTabIterator = ListTabIterator<TabMainView>()
-    private val fragments = mutableListOf<Fragment>()
+    private val fragments = mutableListOf<androidx.fragment.app.Fragment>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

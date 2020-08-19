@@ -1,7 +1,7 @@
 package com.example.commonui.samples.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.fragment_blank.*
 
 private const val ARG_PARAM1 = "param1"
 
-class BlankFragment : Fragment() {
+class BlankFragment : androidx.fragment.app.Fragment() {
     private var param1: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

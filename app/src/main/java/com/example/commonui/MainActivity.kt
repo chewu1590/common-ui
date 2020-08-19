@@ -3,9 +3,9 @@ package com.example.commonui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import cn.woochen.common_ui.dialog.AlertDialog
 import cn.woochen.common_ui.widget.preview.PreviewDialogFragment
@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        rv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this,
+            androidx.recyclerview.widget.RecyclerView.VERTICAL, false)
         rv.adapter = mMainAdapter
         mMainAdapter.itemClickListener = object : MainAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {

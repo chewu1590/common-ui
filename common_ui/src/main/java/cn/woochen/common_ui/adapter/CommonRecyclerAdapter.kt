@@ -2,7 +2,7 @@ package cn.woochen.common_ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * 创建人：woochen123
  * 创建时间：2017/5/23 18:32
  */
-abstract class CommonRecyclerAdapter<T>( var mContext: Context, var mDatas: List<T>, var mLayoutId: Int,var clickTimeSecond :Long= 1L) : RecyclerView.Adapter<CommonRecyclerAdapter.ViewHolder>() {
+abstract class CommonRecyclerAdapter<T>( var mContext: Context, var mDatas: List<T>, var mLayoutId: Int,var clickTimeSecond :Long= 1L) : androidx.recyclerview.widget.RecyclerView.Adapter<CommonRecyclerAdapter.ViewHolder>() {
     private val mInflater: LayoutInflater = LayoutInflater.from(mContext)
     // 多布局支持
     private var mMultiTypeSupport: MultiTypeSupport<T>? = null
@@ -84,7 +84,7 @@ abstract class CommonRecyclerAdapter<T>( var mContext: Context, var mDatas: List
      */
     abstract fun convert(holder: ViewHolder, item: T)
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         // 用来存放子View减少findViewById的次数
         private val mViews: SparseArray<View> = SparseArray()
 

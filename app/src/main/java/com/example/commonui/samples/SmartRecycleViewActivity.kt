@@ -1,8 +1,8 @@
 package com.example.commonui.samples
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.Toast
 import cn.woochen.common_ui.adapter.MultiTypeSupport
 import cn.woochen.common_ui.adapter.OnItemClickListener
@@ -33,7 +33,8 @@ class SmartRecycleViewActivity : AppCompatActivity() {
             it.finishLoadMore(2000)
         }
         for (i in 0 until 50) datas.add("$i")
-        rv_list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rv_list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this,
+            androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         //单条目
 //        val smartAdapter = SmartAdapter(this, datas)
         //多条目
