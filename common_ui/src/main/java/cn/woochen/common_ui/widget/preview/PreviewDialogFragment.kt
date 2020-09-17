@@ -30,15 +30,12 @@ class PreviewDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.full_dialog_fragment)
         arguments?.let {
-            mCurrentIndex = it.getInt(CURRENT_INDEX,0)
+            mCurrentIndex = it.getInt(CURRENT_INDEX, 0)
             mImagePaths = it.getStringArrayList(IMAGE_LIST)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_preview_dialog, container, false)
     }
 
@@ -57,7 +54,7 @@ class PreviewDialogFragment : DialogFragment() {
                 tv_page.text = "${mCurrentIndex + 1}/${mImagePaths.size}"
             }
         })
-        mPreviewImageAdapter.onItemClickListener = object: PreviewImageAdapter.OnItemClickListener {
+        mPreviewImageAdapter.onItemClickListener = object : PreviewImageAdapter.OnItemClickListener {
             override fun onClick(position: Int) {
                 dismiss()
             }
@@ -68,29 +65,29 @@ class PreviewDialogFragment : DialogFragment() {
     /**
      * 显示弹窗
      */
-    fun show(context: Context){
+    fun show(context: Context) {
         val tag = "preview_dialog"
         var manager: FragmentManager? = null
-        if (context is Fragment){
+        if (context is Fragment) {
             manager = context.fragmentManager
         }
-        if (context is AppCompatActivity){
+        if (context is AppCompatActivity) {
             manager = context.supportFragmentManager
         }
-       if (manager!= null) show(manager,tag)
+        if (manager != null) show(manager, tag)
     }
 
 
     companion object {
         private const val CURRENT_INDEX = "CURRENT_INDEX"
         private const val IMAGE_LIST = "IMAGE_LIST"
+
         @JvmStatic
-        fun newInstance(currentIndex: Int, imageList: ArrayList<String>) =
-            PreviewDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(CURRENT_INDEX, currentIndex)
-                    putStringArrayList(IMAGE_LIST, imageList)
-                }
+        fun newInstance(currentIndex: Int, imageList: ArrayList<String>) = PreviewDialogFragment().apply {
+            arguments = Bundle().apply {
+                putInt(CURRENT_INDEX, currentIndex)
+                putStringArrayList(IMAGE_LIST, imageList)
             }
+        }
     }
 }

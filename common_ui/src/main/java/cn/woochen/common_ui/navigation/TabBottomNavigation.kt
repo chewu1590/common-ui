@@ -25,7 +25,9 @@ class TabBottomNavigation : LinearLayout {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
     }
 
-    private var tabViewList: MutableList<TabItemView<*>>? = null
+    private val tabViewList: MutableList<TabItemView<*>> by lazy {
+        mutableListOf<TabItemView<*>>()
+    }
     private var mCurrentIndex = -1
 
     var onItemClickListener: OnItemClickListener? = null
@@ -38,31 +40,28 @@ class TabBottomNavigation : LinearLayout {
     }
 
     /**
+     * 获取当前的索引
+     */
+    fun getCurrentIndex() = mCurrentIndex
+
+    /**
      * 添加条目
      * @param tabIterator
      */
     fun addItem(tabIterator: ITabIterator) {
-        if (tabViewList == null) {
-            tabViewList = ArrayList()
-        }
         var index = 0
         while (tabIterator.hasNext()) {
             val tabItem = tabIterator.next()
             val tabView = tabItem.tabView
-            tabViewList!!.add(tabItem)
-            //添加到当前布局
+            tabViewList.add(tabItem)
             addView(tabView)
-            //重新设置布局
             val layoutParams = tabView!!.layoutParams as LinearLayout.LayoutParams
             layoutParams.weight = 1f
             layoutParams.gravity = mItemGravity?:Gravity.CENTER
             tabView.layoutParams = layoutParams
-            //设置点击事件
             setOnItemClick(tabView, index)
             index++
         }
-        //第一个条目设置为选中
-
         selectItem(0)
     }
 
@@ -72,11 +71,11 @@ class TabBottomNavigation : LinearLayout {
      * @param index
      */
     fun selectItem(index: Int) {
-        if (index < tabViewList!!.size) {
+        if (index < tabViewList.size) {
             val currentIndex = if (mCurrentIndex < 0) 0 else mCurrentIndex
-            tabViewList!![currentIndex].setSelected(false)
+            tabViewList[currentIndex].setSelected(false)
             mCurrentIndex = index
-            tabViewList!![index].setSelected(true)
+            tabViewList[index].setSelected(true)
         } else {
             throw IllegalArgumentException("index over the list size!")
         }
@@ -87,7 +86,7 @@ class TabBottomNavigation : LinearLayout {
      * @return
      */
     fun getItemView(position: Int): TabItemView<*> {
-        return tabViewList!![position]
+        return tabViewList[position]
     }
 
     /**
@@ -99,9 +98,7 @@ class TabBottomNavigation : LinearLayout {
     private fun setOnItemClick(tabView: View, i: Int) {
         tabView.setOnClickListener {
             if (onItemClickListener != null) {
-                //把之前的设置为未选中，当前的设置为选中
-//                selectItem(i)
-                onItemClickListener!!.onItemClick(i)
+                onItemClickListener?.onItemClick(i)
             }
         }
     }

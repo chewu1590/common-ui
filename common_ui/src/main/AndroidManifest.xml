@@ -1,2 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cn.woochen.common_ui"/>
+    xmlns:tools="http://schemas.android.com/tools"
+    package="cn.woochen.common_ui">
+
+    <application>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+
+            <!-- 自动初始化 -->
+            <meta-data
+                android:name="cn.woochen.common_ui.LibraryUI"
+                android:value="androidx.startup" />
+
+        </provider>
+    </application>
+</manifest>

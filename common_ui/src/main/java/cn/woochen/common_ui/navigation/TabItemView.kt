@@ -58,7 +58,7 @@ abstract class TabItemView<T : TabItemView.Builder> protected constructor(protec
      * 获得资源id的View
      */
     protected fun <T : View> getView(layoutId: Int): T {
-        return mTabItemView!!.findViewById<View>(layoutId) as T
+        return mTabItemView?.findViewById<View>(layoutId) as T
     }
 
     abstract class Builder {
